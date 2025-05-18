@@ -5,40 +5,23 @@ Statistics utility.
 Developed by means of C++17 / UNIX / GCC / GTest.
 
 ## 2. Description
-В задании требуется реализовать тестирование созданных разработанных ранее контейнеров динамического размера – последовательного и
-спискового типа.
-1. Последовательный контейнер
-Отличительная черта такого контейнера – расположение элементов друг за другом подряд
-(как и у обычного массива в стиле Си).
-2. Контейнер спискового типа – не предоставляет гарантий расположения элементов друг за
-другом в памяти. Связь между элементами осуществляется через указатели (указатель на
-предыдущий элемент и/или указатель на следующий элемент).
-Пользовательский код (вызывается из функции main) должен содержать следующий набор
-действий с обоими контейнерами:
-1. создание объекта контейнера для хранения объектов типа int
-2. добавление в контейнер десяти элементов (0, 1 … 9)
-3. вывод содержимого контейнера на экран
-ожидаемый результат: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-4. вывод размера контейнера на экран
-ожидаемый результат: 10
-5. удаление третьего (по счёту), пятого и седьмого элементов
-6. вывод содержимого контейнера на экран
-ожидаемый результат: 0, 1, 3, 5, 7, 8, 9
-7. добавление элемента 10 в начало контейнера
-8. вывод содержимого контейнера на экран
-ожидаемый результат: 10, 0, 1, 3, 5, 7, 8, 9
-9. добавление элемента 20 в середину контейнера
-10. вывод содержимого контейнера на экран
-ожидаемый результат: 10, 0, 1, 3, 20, 5, 7, 8, 9
-11. добавление элемента 30 в конец контейнера
-12. вывод содержимого контейнера на экран
-ожидаемый результат: 10, 0, 1, 3, 20, 5, 7, 8, 9, 30
-Требования к минимальному интерфейсу:
-- метод/ы (может быть несколько) добавления элементов в конец контейнера ( push_back )
-- метод/ы вставки элементов в произвольную позицию ( insert )
-- метод/ы удаления элементов из контейнера ( erase )
-- метод получения текущего размера контейнера ( size )
-- метод/ы получения доступа по индексу ( operator[] )
+Реализовать не менее 10-ти тестовых сценариев для каждого из контейнеров. Конкретные
+сценарии придумать самостоятельно, но проверять они должны основную функциональность
+контейнеров:
+- создание контейнера
+- вставка элементов в конец
+- вставка элементов в начало
+- вставка элементов в середину
+- удаление элементов из конца
+- удаление элементов из начала
+- удаление элементов из середины
+- получение элементов из контейнера
+- получение размера контейнера (фактическое количество элементов)    
+
+Итоговые требования:
+1. реализовать два контейнера и код их использования
+2. для сборки использовать CMake
+3. выгрузить результат на github.com в свой аккаунт  
 
 ## 3. Preparing
 ### 3.1 Install the dependencies
@@ -74,214 +57,148 @@ The utility is able to accept the GTest compatible options depending on what and
 Example launch of all the tests (for both vector and singly linked list):
 ```bash
 ./release/container_test 
-[==========] Running 19 tests from 2 test suites.
+[==========] Running 34 tests from 11 test suites.
 [----------] Global test environment set-up.
-[----------] 9 tests from LinkedListTest
-[ RUN      ] LinkedListTest.Creation
-[       OK ] LinkedListTest.Creation (0 ms)
-[ RUN      ] LinkedListTest.PushBack
-[       OK ] LinkedListTest.PushBack (0 ms)
-[ RUN      ] LinkedListTest.Insert
-[       OK ] LinkedListTest.Insert (0 ms)
-[ RUN      ] LinkedListTest.Erase
-[       OK ] LinkedListTest.Erase (0 ms)
-[ RUN      ] LinkedListTest.ElementAccess
-[       OK ] LinkedListTest.ElementAccess (0 ms)
-[ RUN      ] LinkedListTest.Copying
-[       OK ] LinkedListTest.Copying (0 ms)
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[ RUN      ] LinkedListTest.Iterators
-[       OK ] LinkedListTest.Iterators (0 ms)
-[ RUN      ] LinkedListTest.Clear
-[       OK ] LinkedListTest.Clear (0 ms)
-[----------] 9 tests from LinkedListTest (0 ms total)
+[----------] 5 tests from LinkedListBasicTest
+[ RUN      ] LinkedListBasicTest.Creation
+[       OK ] LinkedListBasicTest.Creation (0 ms)
+[ RUN      ] LinkedListBasicTest.PushBack
+[       OK ] LinkedListBasicTest.PushBack (0 ms)
+[ RUN      ] LinkedListBasicTest.Insert
+[       OK ] LinkedListBasicTest.Insert (0 ms)
+[ RUN      ] LinkedListBasicTest.Erase
+[       OK ] LinkedListBasicTest.Erase (0 ms)
+[ RUN      ] LinkedListBasicTest.Clear
+[       OK ] LinkedListBasicTest.Clear (0 ms)
+[----------] 5 tests from LinkedListBasicTest (0 ms total)
 
-[----------] 10 tests from VectorTest
-[ RUN      ] VectorTest.Creation
-[       OK ] VectorTest.Creation (0 ms)
-[ RUN      ] VectorTest.PushBack
-[       OK ] VectorTest.PushBack (0 ms)
-[ RUN      ] VectorTest.Insert
-[       OK ] VectorTest.Insert (0 ms)
-[ RUN      ] VectorTest.Erase
-[       OK ] VectorTest.Erase (0 ms)
-[ RUN      ] VectorTest.ElementAccess
-[       OK ] VectorTest.ElementAccess (0 ms)
-[ RUN      ] VectorTest.SizeAndCapacity
-[       OK ] VectorTest.SizeAndCapacity (0 ms)
-[ RUN      ] VectorTest.Copying
-[       OK ] VectorTest.Copying (0 ms)
-[ RUN      ] VectorTest.Moving
-[       OK ] VectorTest.Moving (0 ms)
-[ RUN      ] VectorTest.Iterators
-[       OK ] VectorTest.Iterators (0 ms)
-[ RUN      ] VectorTest.Clear
-[       OK ] VectorTest.Clear (0 ms)
-[----------] 10 tests from VectorTest (0 ms total)
+[----------] 2 tests from LinkedListAccessTest
+[ RUN      ] LinkedListAccessTest.OperatorBracket
+[       OK ] LinkedListAccessTest.OperatorBracket (0 ms)
+[ RUN      ] LinkedListAccessTest.ConstOperatorBracket
+[       OK ] LinkedListAccessTest.ConstOperatorBracket (0 ms)
+[----------] 2 tests from LinkedListAccessTest (0 ms total)
+
+[----------] 2 tests from LinkedListCopyTest
+[ RUN      ] LinkedListCopyTest.CopyConstructor
+[       OK ] LinkedListCopyTest.CopyConstructor (0 ms)
+[ RUN      ] LinkedListCopyTest.CopyAssignment
+[       OK ] LinkedListCopyTest.CopyAssignment (0 ms)
+[----------] 2 tests from LinkedListCopyTest (0 ms total)
+
+[----------] 2 tests from LinkedListMoveTest
+[ RUN      ] LinkedListMoveTest.MoveConstructor
+[       OK ] LinkedListMoveTest.MoveConstructor (0 ms)
+[ RUN      ] LinkedListMoveTest.MoveAssignment
+[       OK ] LinkedListMoveTest.MoveAssignment (0 ms)
+[----------] 2 tests from LinkedListMoveTest (0 ms total)
+
+[----------] 6 tests from LinkedListIteratorTest
+[ RUN      ] LinkedListIteratorTest.BasicIteration
+[       OK ] LinkedListIteratorTest.BasicIteration (0 ms)
+[ RUN      ] LinkedListIteratorTest.ConstIteration
+[       OK ] LinkedListIteratorTest.ConstIteration (0 ms)
+[ RUN      ] LinkedListIteratorTest.IteratorInsert
+[       OK ] LinkedListIteratorTest.IteratorInsert (0 ms)
+[ RUN      ] LinkedListIteratorTest.IteratorErase
+[       OK ] LinkedListIteratorTest.IteratorErase (0 ms)
+[ RUN      ] LinkedListIteratorTest.EraseFromBeginning
+[       OK ] LinkedListIteratorTest.EraseFromBeginning (0 ms)
+[ RUN      ] LinkedListIteratorTest.EraseFromEnd
+[       OK ] LinkedListIteratorTest.EraseFromEnd (0 ms)
+[----------] 6 tests from LinkedListIteratorTest (0 ms total)
+
+[----------] 4 tests from VectorBasicTest
+[ RUN      ] VectorBasicTest.Creation
+[       OK ] VectorBasicTest.Creation (0 ms)
+[ RUN      ] VectorBasicTest.PushBack
+[       OK ] VectorBasicTest.PushBack (0 ms)
+[ RUN      ] VectorBasicTest.Insert
+[       OK ] VectorBasicTest.Insert (0 ms)
+[ RUN      ] VectorBasicTest.Erase
+[       OK ] VectorBasicTest.Erase (0 ms)
+[----------] 4 tests from VectorBasicTest (7 ms total)
+
+[----------] 2 tests from VectorAccessTest
+[ RUN      ] VectorAccessTest.OperatorBracket
+[       OK ] VectorAccessTest.OperatorBracket (0 ms)
+[ RUN      ] VectorAccessTest.ConstOperatorBracket
+[       OK ] VectorAccessTest.ConstOperatorBracket (0 ms)
+[----------] 2 tests from VectorAccessTest (0 ms total)
+
+[----------] 2 tests from VectorCopyTest
+[ RUN      ] VectorCopyTest.CopyConstructor
+[       OK ] VectorCopyTest.CopyConstructor (0 ms)
+[ RUN      ] VectorCopyTest.CopyAssignment
+[       OK ] VectorCopyTest.CopyAssignment (0 ms)
+[----------] 2 tests from VectorCopyTest (0 ms total)
+
+[----------] 2 tests from VectorMoveTest
+[ RUN      ] VectorMoveTest.MoveConstructor
+[       OK ] VectorMoveTest.MoveConstructor (0 ms)
+[ RUN      ] VectorMoveTest.MoveAssignment
+[       OK ] VectorMoveTest.MoveAssignment (0 ms)
+[----------] 2 tests from VectorMoveTest (0 ms total)
+
+[----------] 4 tests from VectorIteratorTest
+[ RUN      ] VectorIteratorTest.BasicIteration
+[       OK ] VectorIteratorTest.BasicIteration (0 ms)
+[ RUN      ] VectorIteratorTest.ConstIteration
+[       OK ] VectorIteratorTest.ConstIteration (0 ms)
+[ RUN      ] VectorIteratorTest.IteratorInsert
+[       OK ] VectorIteratorTest.IteratorInsert (0 ms)
+[ RUN      ] VectorIteratorTest.IteratorErase
+[       OK ] VectorIteratorTest.IteratorErase (0 ms)
+[----------] 4 tests from VectorIteratorTest (0 ms total)
+
+[----------] 3 tests from VectorCapacityTest
+[ RUN      ] VectorCapacityTest.SizeAndCapacity
+[       OK ] VectorCapacityTest.SizeAndCapacity (0 ms)
+[ RUN      ] VectorCapacityTest.Reserve
+[       OK ] VectorCapacityTest.Reserve (0 ms)
+[ RUN      ] VectorCapacityTest.Clear
+[       OK ] VectorCapacityTest.Clear (0 ms)
+[----------] 3 tests from VectorCapacityTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 19 tests from 2 test suites ran. (0 ms total)
-[  PASSED  ] 19 tests.
-```
-Example launch of all the tests (for both vector and singly linked list) and store report to _container_test_report.xml_ file:
-```bash
-./release/container_test --gtest_output=xml:./container_test_report.xml
-[==========] Running 19 tests from 2 test suites.
-[----------] Global test environment set-up.
-[----------] 9 tests from LinkedListTest
-[ RUN      ] LinkedListTest.Creation
-[       OK ] LinkedListTest.Creation (0 ms)
-[ RUN      ] LinkedListTest.PushBack
-[       OK ] LinkedListTest.PushBack (0 ms)
-[ RUN      ] LinkedListTest.Insert
-[       OK ] LinkedListTest.Insert (0 ms)
-[ RUN      ] LinkedListTest.Erase
-[       OK ] LinkedListTest.Erase (0 ms)
-[ RUN      ] LinkedListTest.ElementAccess
-[       OK ] LinkedListTest.ElementAccess (0 ms)
-[ RUN      ] LinkedListTest.Copying
-[       OK ] LinkedListTest.Copying (0 ms)
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[ RUN      ] LinkedListTest.Iterators
-[       OK ] LinkedListTest.Iterators (0 ms)
-[ RUN      ] LinkedListTest.Clear
-[       OK ] LinkedListTest.Clear (0 ms)
-[----------] 9 tests from LinkedListTest (7 ms total)
-
-[----------] 10 tests from VectorTest
-[ RUN      ] VectorTest.Creation
-[       OK ] VectorTest.Creation (0 ms)
-[ RUN      ] VectorTest.PushBack
-[       OK ] VectorTest.PushBack (0 ms)
-[ RUN      ] VectorTest.Insert
-[       OK ] VectorTest.Insert (0 ms)
-[ RUN      ] VectorTest.Erase
-[       OK ] VectorTest.Erase (0 ms)
-[ RUN      ] VectorTest.ElementAccess
-[       OK ] VectorTest.ElementAccess (0 ms)
-[ RUN      ] VectorTest.SizeAndCapacity
-[       OK ] VectorTest.SizeAndCapacity (0 ms)
-[ RUN      ] VectorTest.Copying
-[       OK ] VectorTest.Copying (0 ms)
-[ RUN      ] VectorTest.Moving
-[       OK ] VectorTest.Moving (0 ms)
-[ RUN      ] VectorTest.Iterators
-[       OK ] VectorTest.Iterators (0 ms)
-[ RUN      ] VectorTest.Clear
-[       OK ] VectorTest.Clear (0 ms)
-[----------] 10 tests from VectorTest (0 ms total)
-
-[----------] Global test environment tear-down
-[==========] 19 tests from 2 test suites ran. (7 ms total)
-[  PASSED  ] 19 tests.
-```
-Example launch tests for linked list container only:
-```bash
-./release/container_test --gtest_filter=LinkedListTest.*
-Note: Google Test filter = LinkedListTest.*
-[==========] Running 9 tests from 1 test suite.
-[----------] Global test environment set-up.
-[----------] 9 tests from LinkedListTest
-[ RUN      ] LinkedListTest.Creation
-[       OK ] LinkedListTest.Creation (0 ms)
-[ RUN      ] LinkedListTest.PushBack
-[       OK ] LinkedListTest.PushBack (0 ms)
-[ RUN      ] LinkedListTest.Insert
-[       OK ] LinkedListTest.Insert (0 ms)
-[ RUN      ] LinkedListTest.Erase
-[       OK ] LinkedListTest.Erase (0 ms)
-[ RUN      ] LinkedListTest.ElementAccess
-[       OK ] LinkedListTest.ElementAccess (0 ms)
-[ RUN      ] LinkedListTest.Copying
-[       OK ] LinkedListTest.Copying (0 ms)
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[ RUN      ] LinkedListTest.Iterators
-[       OK ] LinkedListTest.Iterators (0 ms)
-[ RUN      ] LinkedListTest.Clear
-[       OK ] LinkedListTest.Clear (0 ms)
-[----------] 9 tests from LinkedListTest (0 ms total)
-
-[----------] Global test environment tear-down
-[==========] 9 tests from 1 test suite ran. (0 ms total)
-[  PASSED  ] 9 tests.
+[==========] 34 tests from 11 test suites ran. (8 ms total)
+[  PASSED  ] 34 tests.
 ```
 Example launch the single test of move semantics (including move ctor) for linked list container only:
 ```bash
-./release/container_test --gtest_filter=LinkedListTest.Moving
-Note: Google Test filter = LinkedListTest.Moving
+./release/container_test --gtest_filter=LinkedListMoveTest.MoveConstructor
+Note: Google Test filter = LinkedListMoveTest.MoveConstructor
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
-[----------] 1 test from LinkedListTest
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[----------] 1 test from LinkedListTest (0 ms total)
+[----------] 1 test from LinkedListMoveTest
+[ RUN      ] LinkedListMoveTest.MoveConstructor
+[       OK ] LinkedListMoveTest.MoveConstructor (0 ms)
+[----------] 1 test from LinkedListMoveTest (0 ms total)
 
 [----------] Global test environment tear-down
 [==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
-
 ```
-Example launch tests for linked list container only with the stated repeats:
+Example launch basic tests group for linked list container only with the stated repeats:
 ```bash
-./release/container_test --gtest_filter=LinkedListTest.* --gtest_repeat=2
-Repeating all tests (iteration 1) . . .
-
-Note: Google Test filter = LinkedListTest.*
-[==========] Running 9 tests from 1 test suite.
+./release/container_test --gtest_filter=LinkedListBasicTest.*
+Note: Google Test filter = LinkedListBasicTest.*
+[==========] Running 5 tests from 1 test suite.
 [----------] Global test environment set-up.
-[----------] 9 tests from LinkedListTest
-[ RUN      ] LinkedListTest.Creation
-[       OK ] LinkedListTest.Creation (0 ms)
-[ RUN      ] LinkedListTest.PushBack
-[       OK ] LinkedListTest.PushBack (0 ms)
-[ RUN      ] LinkedListTest.Insert
-[       OK ] LinkedListTest.Insert (0 ms)
-[ RUN      ] LinkedListTest.Erase
-[       OK ] LinkedListTest.Erase (0 ms)
-[ RUN      ] LinkedListTest.ElementAccess
-[       OK ] LinkedListTest.ElementAccess (0 ms)
-[ RUN      ] LinkedListTest.Copying
-[       OK ] LinkedListTest.Copying (0 ms)
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[ RUN      ] LinkedListTest.Iterators
-[       OK ] LinkedListTest.Iterators (0 ms)
-[ RUN      ] LinkedListTest.Clear
-[       OK ] LinkedListTest.Clear (0 ms)
-[----------] 9 tests from LinkedListTest (0 ms total)
-
-[==========] 9 tests from 1 test suite ran. (0 ms total)
-[  PASSED  ] 9 tests.
-
-Repeating all tests (iteration 2) . . .
-
-Note: Google Test filter = LinkedListTest.*
-[==========] Running 9 tests from 1 test suite.
-[----------] 9 tests from LinkedListTest
-[ RUN      ] LinkedListTest.Creation
-[       OK ] LinkedListTest.Creation (0 ms)
-[ RUN      ] LinkedListTest.PushBack
-[       OK ] LinkedListTest.PushBack (0 ms)
-[ RUN      ] LinkedListTest.Insert
-[       OK ] LinkedListTest.Insert (0 ms)
-[ RUN      ] LinkedListTest.Erase
-[       OK ] LinkedListTest.Erase (0 ms)
-[ RUN      ] LinkedListTest.ElementAccess
-[       OK ] LinkedListTest.ElementAccess (0 ms)
-[ RUN      ] LinkedListTest.Copying
-[       OK ] LinkedListTest.Copying (0 ms)
-[ RUN      ] LinkedListTest.Moving
-[       OK ] LinkedListTest.Moving (0 ms)
-[ RUN      ] LinkedListTest.Iterators
-[       OK ] LinkedListTest.Iterators (0 ms)
-[ RUN      ] LinkedListTest.Clear
-[       OK ] LinkedListTest.Clear (0 ms)
-[----------] 9 tests from LinkedListTest (0 ms total)
+[----------] 5 tests from LinkedListBasicTest
+[ RUN      ] LinkedListBasicTest.Creation
+[       OK ] LinkedListBasicTest.Creation (0 ms)
+[ RUN      ] LinkedListBasicTest.PushBack
+[       OK ] LinkedListBasicTest.PushBack (0 ms)
+[ RUN      ] LinkedListBasicTest.Insert
+[       OK ] LinkedListBasicTest.Insert (0 ms)
+[ RUN      ] LinkedListBasicTest.Erase
+[       OK ] LinkedListBasicTest.Erase (0 ms)
+[ RUN      ] LinkedListBasicTest.Clear
+[       OK ] LinkedListBasicTest.Clear (0 ms)
+[----------] 5 tests from LinkedListBasicTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 9 tests from 1 test suite ran. (0 ms total)
-[  PASSED  ] 9 tests.
+[==========] 5 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 5 tests.
 ```

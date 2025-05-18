@@ -3,108 +3,71 @@
 
 #include "../inc/linked_singly.h"
 
-
-/* 
-    Test fixture for ContainerListSingly
+/*
+    Base test fixture for ContainerListSingly
 */
 class LinkedListTest : public ::testing::Test
 {
 protected:
-    void SetUp() override
-    {
-        /*
-            Common setup code if needed
-        */
-    }
-
-    void TearDown() override
-    {
-        /*
-            Common cleanup code if needed
-        */
-    }
+    void SetUp() override {}
+    void TearDown() override {}
 };
 
-/* 
-    Test container creation
-*/
-TEST_F(LinkedListTest, Creation)
+/* Test fixture for basic operations */
+class LinkedListBasicTest : public LinkedListTest {};
+
+/* Test fixture for element access */
+class LinkedListAccessTest : public LinkedListTest {};
+
+/* Test fixture for copying operations */
+class LinkedListCopyTest : public LinkedListTest {};
+
+/* Test fixture for move operations */
+class LinkedListMoveTest : public LinkedListTest {};
+
+/* Test fixture for iterator operations */
+class LinkedListIteratorTest : public LinkedListTest {};
+
+/* Basic Operations Tests */
+TEST_F(LinkedListBasicTest, Creation)
 {
     ContainerListSingly<int> container;
     EXPECT_EQ(container.size(), 0);
 }
 
-/* 
-    Test insertion at the end
-*/
-TEST_F(LinkedListTest, PushBack)
+TEST_F(LinkedListBasicTest, PushBack)
 {
     ContainerListSingly<int> container;
     
-    /* 
-        Test regular push_back
-    */
     container.push_back(1);
     EXPECT_EQ(container.size(), 1);
     EXPECT_EQ(container[0], 1);
 
-    /* 
-        Test multiple push_backs
-    */
     container.push_back(2);
     container.push_back(3);
     EXPECT_EQ(container.size(), 3);
     EXPECT_EQ(container[1], 2);
     EXPECT_EQ(container[2], 3);
-
-    /* 
-        Test move semantics
-    */
-    ContainerListSingly<int> moveContainer;
-    int value = 42;
-    moveContainer.push_back(std::move(value));
-    EXPECT_EQ(moveContainer[0], 42);
 }
 
-/* 
-    Test insertion at specific position
-*/
-TEST_F(LinkedListTest, Insert)
+TEST_F(LinkedListBasicTest, Insert)
 {
     ContainerListSingly<int> container;
     container.push_back(1);
     container.push_back(3);
 
-    /* 
-        Insert in the middle
-    */
     container.insert(1, 2);
     EXPECT_EQ(container.size(), 3);
     EXPECT_EQ(container[0], 1);
     EXPECT_EQ(container[1], 2);
     EXPECT_EQ(container[2], 3);
 
-    /* 
-        Insert at the beginning
-    */
     container.insert(0, 0);
     EXPECT_EQ(container.size(), 4);
     EXPECT_EQ(container[0], 0);
-
-    /* 
-        Test move semantics
-    */
-    ContainerListSingly<int> moveContainer;
-    moveContainer.push_back(2);
-    int value = 1;
-    moveContainer.insert(0, std::move(value));
-    EXPECT_EQ(moveContainer[0], 1);
 }
 
-/* 
-    Test removal
-*/
-TEST_F(LinkedListTest, Erase)
+TEST_F(LinkedListBasicTest, Erase)
 {
     ContainerListSingly<int> container;
     for(int i = 0; i < 5; ++i)
@@ -112,32 +75,23 @@ TEST_F(LinkedListTest, Erase)
         container.push_back(i);
     }
 
-    /* 
-        Erase from the middle
-    */
     container.erase(2);
     EXPECT_EQ(container.size(), 4);
     EXPECT_EQ(container[2], 3);
 
-    /* 
-        Erase from the beginning
-    */
     container.erase(0);
     EXPECT_EQ(container.size(), 3);
     EXPECT_EQ(container[0], 1);
 
-    /* 
-        Erase from the end
-    */
     container.erase(container.size() - 1);
     EXPECT_EQ(container.size(), 2);
     EXPECT_EQ(container[container.size() - 1], 3);
 }
 
-/* 
-    Test element access
+/*
+    Element Access Tests
 */
-TEST_F(LinkedListTest, ElementAccess)
+TEST_F(LinkedListAccessTest, OperatorBracket)
 {
     ContainerListSingly<int> container;
     for(int i = 0; i < 5; ++i)
@@ -145,17 +99,20 @@ TEST_F(LinkedListTest, ElementAccess)
         container.push_back(i);
     }
 
-    /* 
-        Test operator[]
-    */
     for(int i = 0; i < 5; ++i)
     {
         EXPECT_EQ(container[i], i);
     }
+}
 
-    /* 
-        Test const operator[]
-    */
+TEST_F(LinkedListAccessTest, ConstOperatorBracket)
+{
+    ContainerListSingly<int> container;
+    for(int i = 0; i < 5; ++i)
+    {
+        container.push_back(i);
+    }
+
     const ContainerListSingly<int>& constContainer = container;
     for(int i = 0; i < 5; ++i)
     {
@@ -163,10 +120,10 @@ TEST_F(LinkedListTest, ElementAccess)
     }
 }
 
-/* 
-    Test copying
+/*
+    Copy Operations Tests
 */
-TEST_F(LinkedListTest, Copying)
+TEST_F(LinkedListCopyTest, CopyConstructor)
 {
     ContainerListSingly<int> original;
     for(int i = 0; i < 5; ++i)
@@ -174,19 +131,22 @@ TEST_F(LinkedListTest, Copying)
         original.push_back(i);
     }
 
-    /* 
-        Test copy constructor
-    */
     ContainerListSingly<int> copy(original);
     EXPECT_EQ(copy.size(), original.size());
     for(int i = 0; i < 5; ++i)
     {
         EXPECT_EQ(copy[i], original[i]);
     }
+}
 
-    /* 
-        Test copy assignment
-    */
+TEST_F(LinkedListCopyTest, CopyAssignment)
+{
+    ContainerListSingly<int> original;
+    for(int i = 0; i < 5; ++i)
+    {
+        original.push_back(i);
+    }
+
     ContainerListSingly<int> assigned;
     assigned = original;
     EXPECT_EQ(assigned.size(), original.size());
@@ -196,10 +156,10 @@ TEST_F(LinkedListTest, Copying)
     }
 }
 
-/* 
-    Test move semantics (including move ctor)
+/*
+    Move Operations Tests
 */
-TEST_F(LinkedListTest, Moving)
+TEST_F(LinkedListMoveTest, MoveConstructor)
 {
     ContainerListSingly<int> original;
     for(int i = 0; i < 5; ++i)
@@ -207,9 +167,6 @@ TEST_F(LinkedListTest, Moving)
         original.push_back(i);
     }
 
-    /* 
-        Test move constructor
-    */
     ContainerListSingly<int> moved(std::move(original));
     EXPECT_EQ(moved.size(), 5);
     EXPECT_EQ(original.size(), 0);
@@ -217,24 +174,30 @@ TEST_F(LinkedListTest, Moving)
     {
         EXPECT_EQ(moved[i], i);
     }
+}
 
-    /* 
-        Test move assignment
-    */
-    ContainerListSingly<int> assigned;
-    assigned = std::move(moved);
-    EXPECT_EQ(assigned.size(), 5);
-    EXPECT_EQ(moved.size(), 0);
+TEST_F(LinkedListMoveTest, MoveAssignment)
+{
+    ContainerListSingly<int> original;
     for(int i = 0; i < 5; ++i)
     {
-        EXPECT_EQ(assigned[i], i);
+        original.push_back(i);
+    }
+
+    ContainerListSingly<int> moved;
+    moved = std::move(original);
+    EXPECT_EQ(moved.size(), 5);
+    EXPECT_EQ(original.size(), 0);
+    for(int i = 0; i < 5; ++i)
+    {
+        EXPECT_EQ(moved[i], i);
     }
 }
 
-/* 
-    Test iterators
+/*
+    Iterator Tests
 */
-TEST_F(LinkedListTest, Iterators) 
+TEST_F(LinkedListIteratorTest, BasicIteration)
 {
     ContainerListSingly<int> container;
     for(int i = 0; i < 5; ++i)
@@ -242,28 +205,37 @@ TEST_F(LinkedListTest, Iterators)
         container.push_back(i);
     }
 
-    /* 
-        Test regular iterator
-    */
     int expected = 0;
     for(auto it = container.begin(); it != container.end(); ++it)
     {
         EXPECT_EQ(*it, expected++);
     }
+}
 
-    /* 
-        Test const iterator
-    */
+TEST_F(LinkedListIteratorTest, ConstIteration)
+{
+    ContainerListSingly<int> container;
+    for(int i = 0; i < 5; ++i)
+    {
+        container.push_back(i);
+    }
+
     const ContainerListSingly<int>& constContainer = container;
-    expected = 0;
+    int expected = 0;
     for(auto it = constContainer.begin(); it != constContainer.end(); ++it)
     {
         EXPECT_EQ(*it, expected++);
     }
+}
 
-    /* 
-        Test iterator-based insert
-    */
+TEST_F(LinkedListIteratorTest, IteratorInsert)
+{
+    ContainerListSingly<int> container;
+    for(int i = 0; i < 5; ++i)
+    {
+        container.push_back(i);
+    }
+
     auto it = container.begin();
     EXPECT_EQ(*it, 0);
     EXPECT_EQ(it.getValue(), 0);
@@ -276,29 +248,17 @@ TEST_F(LinkedListTest, Iterators)
     EXPECT_EQ(*newIt, 10);
     EXPECT_EQ(newIt.getValue(), 10);
     EXPECT_EQ(container[1], 10);
+}
 
-    /* 
-        Test iterator-based erase
-    */    
-    container.clear();
+TEST_F(LinkedListIteratorTest, IteratorErase)
+{
+    ContainerListSingly<int> container;
     for(int i = 0; i < 5; ++i)
     {
         container.push_back(i);
     }
 
-    /* 
-        Verify initial state
-    */
-    EXPECT_EQ(container.size(), 5);
-    for(int i = 0; i < 5; ++i)
-    {
-        EXPECT_EQ(container[i], i);
-    }
-
-    /* 
-        Test erasing from middle
-    */
-    it = container.begin();
+    auto it = container.begin();
     ++it;  // Points to 1
     
     auto nextIt = container.erase(it);  // Should point to 2
@@ -314,9 +274,6 @@ TEST_F(LinkedListTest, Iterators)
     it = nextIt;
     EXPECT_EQ(*it, 2);
     
-    /* 
-        Test second erase
-    */
     nextIt = container.erase(it);
     
     EXPECT_EQ(container.size(), 3);
@@ -324,36 +281,52 @@ TEST_F(LinkedListTest, Iterators)
     EXPECT_EQ(container[1], 3);
     EXPECT_EQ(container[2], 4);
     EXPECT_EQ(*nextIt, 3);
+}
 
-    /* 
-        Test erasing from beginning
-    */
-    it = container.begin();
-    
-    nextIt = container.erase(it);
+TEST_F(LinkedListIteratorTest, EraseFromBeginning)
+{
+    ContainerListSingly<int> container;
+    for(int i = 0; i < 5; ++i)
+    {
+        container.push_back(i);
+    }
 
-    EXPECT_EQ(container.size(), 2);
-    EXPECT_EQ(container[0], 3);
-    EXPECT_EQ(container[1], 4);
-    EXPECT_EQ(*nextIt, 3);
+    auto it = container.begin();
+    auto nextIt = container.erase(it);
 
-    /* 
-        Test erasing from end
-    */
-    it = container.begin();
+    EXPECT_EQ(container.size(), 4);
+    EXPECT_EQ(container[0], 1);
+    EXPECT_EQ(container[1], 2);
+    EXPECT_EQ(container[2], 3);
+    EXPECT_EQ(container[3], 4);
+    EXPECT_EQ(*nextIt, 1);
+}
+
+TEST_F(LinkedListIteratorTest, EraseFromEnd)
+{
+    ContainerListSingly<int> container;
+    for(int i = 0; i < 5; ++i)
+    {
+        container.push_back(i);
+    }
+
+    auto it = container.begin();
     ++it;
+    ++it;
+    ++it;
+    ++it;  // Points to last element
     
-    nextIt = container.erase(it);
+    auto nextIt = container.erase(it);
     
-    EXPECT_EQ(container.size(), 1);
-    EXPECT_EQ(container[0], 3);
+    EXPECT_EQ(container.size(), 4);
+    EXPECT_EQ(container[0], 0);
+    EXPECT_EQ(container[1], 1);
+    EXPECT_EQ(container[2], 2);
+    EXPECT_EQ(container[3], 3);
     EXPECT_EQ(nextIt, container.end());
 }
 
-/* 
-    Test clearing
-*/
-TEST_F(LinkedListTest, Clear)
+TEST_F(LinkedListBasicTest, Clear)
 {
     ContainerListSingly<int> container;
     for(int i = 0; i < 5; ++i)
